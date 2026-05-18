@@ -25,7 +25,7 @@ def init_database():
         activities_collection.update_one(
             {"_id": name},
             {"$setOnInsert": details},
-            upsert=True
+            upsert=True,
         )
             
     # Initialize teacher accounts if empty
