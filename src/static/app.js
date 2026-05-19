@@ -464,11 +464,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Apply difficulty filter
-      if (currentDifficulty === "untagged") {
-        if (activityDifficulty) {
-          return;
-        }
-      } else if (activityDifficulty !== currentDifficulty) {
+      if (
+        currentDifficulty === "untagged" &&
+        activityDifficulty
+      ) {
+        return;
+      }
+
+      if (
+        currentDifficulty !== "untagged" &&
+        activityDifficulty !== currentDifficulty
+      ) {
         return;
       }
 
