@@ -1,4 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Theme toggle functionality
+  const themeToggleButton = document.getElementById("theme-toggle-button");
+  const htmlElement = document.documentElement;
+
+  // Only initialize theme toggle if the button exists
+  if (themeToggleButton) {
+    const themeIcon = themeToggleButton.querySelector(".theme-icon");
+
+    // Check for saved theme preference or default to light mode
+    let currentTheme = "light";
+    try {
+      currentTheme = localStorage.getItem("theme") || "light";
+    } catch (e) {
+      // localStorage may be unavailable in private browsing mode
+      console.warn("localStorage is unavailable, using light mode by default");
+    }
+
+    if (currentTheme === "dark") {
+      htmlElement.classList.add("dark-mode");
+      if (themeIcon) themeIcon.textContent = "☀️";
+    } else {
+      htmlElement.classList.remove("dark-mode");
+      if (themeIcon) themeIcon.textContent = "🌙";
+    }
+
+    // Theme toggle button event listener
+    themeToggleButton.addEventListener("click", () => {
+      const isDarkMode = htmlElement.classList.toggle("dark-mode");
+      try {
+        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+      } catch (e) {
+        // localStorage may be unavailable in private browsing mode
+        console.warn("localStorage is unavailable, theme preference not saved");
+      }
+      if (themeIcon) themeIcon.textContent = isDarkMode ? "☀️" : "🌙";
+    });
+  }
+
   // DOM elements
   const activitiesList = document.getElementById("activities-list");
   const messageDiv = document.getElementById("message");
