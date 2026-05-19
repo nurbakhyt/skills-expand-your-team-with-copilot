@@ -601,7 +601,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Share activity details using native share API with clipboard fallback
   async function shareActivity(activityName, details) {
-    const activityUrl = `${window.location.origin}${window.location.pathname}#activity=${encodeURIComponent(activityName)}`;
+    const activityUrl = `${window.location.origin}${window.location.pathname}`;
     const shareText = `Check out ${activityName} at Mergington High School: ${details.description} (${formatSchedule(details)})`;
     const sharePayload = {
       title: `${activityName} | Mergington High School`,
@@ -624,7 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showMessage("Sharing is not available in this browser.", "info");
     } catch (error) {
-      if (error && error.name === "AbortError") {
+      if (error.name === "AbortError") {
         return;
       }
       showMessage("Unable to share activity right now.", "error");
