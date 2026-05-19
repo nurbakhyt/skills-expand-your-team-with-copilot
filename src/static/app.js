@@ -8,7 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeIcon = themeToggleButton.querySelector(".theme-icon");
 
     // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem("theme") || "light";
+    let currentTheme = "light";
+    try {
+      currentTheme = localStorage.getItem("theme") || "light";
+    } catch (e) {
+      // localStorage may be unavailable in private browsing mode
+      console.warn("localStorage is unavailable, using light mode by default");
+    }
+
     if (currentTheme === "dark") {
       htmlElement.classList.add("dark-mode");
       if (themeIcon) themeIcon.textContent = "☀️";
@@ -20,7 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Theme toggle button event listener
     themeToggleButton.addEventListener("click", () => {
       const isDarkMode = htmlElement.classList.toggle("dark-mode");
-      localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+      try {
+        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+      } catch (e) {
+        // localStorage may be unavailable in private browsing mode
+        console.warn("localStorage is unavailable, theme preference not saved");
+      }
       if (themeIcon) themeIcon.textContent = isDarkMode ? "☀️" : "🌙";
     });
   }
