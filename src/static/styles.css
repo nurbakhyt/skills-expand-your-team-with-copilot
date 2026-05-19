@@ -209,14 +209,18 @@ section h3 {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: #e8f5e9;
-  color: #2e7d32;
   font-size: 0.65rem;
   font-weight: bold;
   padding: 2px 6px;
   border-radius: 10px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+}
+
+.filter-note {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  line-height: 1.3;
 }
 
 /* Capacity Indicator */
