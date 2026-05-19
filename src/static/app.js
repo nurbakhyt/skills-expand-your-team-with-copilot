@@ -601,7 +601,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Share activity details using native share API with clipboard fallback
   async function shareActivity(activityName, details) {
-    const activityUrl = `${window.location.origin}${window.location.pathname}`;
+    const shareUrl = new URL(window.location.href);
+    shareUrl.searchParams.set("activity", activityName);
+    const activityUrl = shareUrl.toString();
     const shareText = `Check out ${activityName} at Mergington High School: ${details.description} (${formatSchedule(details)})`;
     const sharePayload = {
       title: `${activityName} | Mergington High School`,
@@ -622,7 +624,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      showMessage("Sharing is not available in this browser.", "info");
+      showMessage(
+        "Sharing and clipboard access are not available in this browser.",
+        "info"
+      );
     } catch (error) {
       if (error.name === "AbortError") {
         return;
