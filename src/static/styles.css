@@ -240,8 +240,8 @@ section h3 {
 }
 
 :root.dark-mode .activity-tag {
-  background: #3f51b5;
-  color: #e0e0e0;
+  background: var(--primary);
+  color: var(--text-primary);
 }
 
 /* Capacity Indicator */
