@@ -657,6 +657,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
       </div>
       <div class="activity-card-actions">
+        <button class="share-button" data-activity="${name}" aria-label="Share ${name}">
+          Share Activity
+        </button>
         ${
           currentUser
             ? `
@@ -691,7 +694,51 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Add click handler for share button
+    const shareButton = activityCard.querySelector(".share-button");
+    shareButton.addEventListener("click", () => {
+      shareActivity(name, details);
+    });
+
     activitiesList.appendChild(activityCard);
+  }
+
+  // Share activity details using native share API with clipboard fallback
+  async function shareActivity(activityName, details) {
+    const shareUrl = new URL(window.location.href);
+    shareUrl.searchParams.set("activity", activityName);
+    const activityUrl = shareUrl.toString();
+    const shareText = `Check out ${activityName} at Mergington High School: ${details.description} (${formatSchedule(details)})`;
+    const sharePayload = {
+      title: `${activityName} | Mergington High School`,
+      text: shareText,
+      url: activityUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(sharePayload);
+        return;
+      }
+
+      const clipboardText = `${shareText}\n${activityUrl}`;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(clipboardText);
+        showMessage("Share details copied to clipboard.", "success");
+        return;
+      }
+
+      showMessage(
+        "Sharing and clipboard access are not available in this browser.",
+        "info"
+      );
+    } catch (error) {
+      if (error.name === "AbortError") {
+        return;
+      }
+      showMessage("Unable to share activity right now.", "error");
+      console.error("Error sharing activity:", error);
+    }
   }
 
   // Event listeners for search and filter
