@@ -16,9 +16,28 @@ class InitDatabaseTests(unittest.TestCase):
                     "start_time": "19:00",
                     "end_time": "20:00",
                 },
+                "difficulty": "Intermediate",
                 "max_participants": 15,
                 "participants": [],
             },
+        )
+
+    def test_seed_data_includes_optional_difficulty_levels(self):
+        self.assertEqual(
+            database.initial_activities["Chess Club"]["difficulty"],
+            "Beginner",
+        )
+        self.assertEqual(
+            database.initial_activities["Programming Class"]["difficulty"],
+            "Intermediate",
+        )
+        self.assertEqual(
+            database.initial_activities["Math Club"]["difficulty"],
+            "Advanced",
+        )
+        self.assertNotIn(
+            "difficulty",
+            database.initial_activities["Morning Fitness"],
         )
 
     @patch.object(database, "teachers_collection")
